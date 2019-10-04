@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
+using NScrape;
 
 namespace PlexMusicPlaylistExporter {
 	class Program {
@@ -41,6 +44,10 @@ namespace PlexMusicPlaylistExporter {
 						Console.WriteLine( $"Destination folder does not exist: {destinationFolder.Value()}" );
 						returnValue = appReturnValueFail;
 					}
+
+					var webClient = new WebClient();
+
+					var playlistElement = GetPlaylist( config, webClient, playlistToExport.Value() );
 				}
 				else {
 					app.ShowHint();
@@ -60,6 +67,24 @@ namespace PlexMusicPlaylistExporter {
 			}
 
 			return appReturnValueFail;
+		}
+
+		private static XElement GetPlaylist( IConfiguration config, WebClient webClient, string playlist ) {
+			var allPlaylistsUri = new Uri( $"http://{config["plexIp"]}:{config["plexPort"]}/playlists?X-Plex-Token={config["plexToken"]}" );
+
+			Console.WriteLine( $"Getting list of all playlists from {allPlaylistsUri}" );
+
+			using ( var allPlaylistsResponse = webClient.SendRequest( allPlaylistsUri ) ) {
+				if ( allPlaylistsResponse.Success ) {
+					if ( allPlaylistsResponse is XmlWebResponse xmlResponse ) {
+						var playlistElement = xmlResponse.XDocument.Element( "MediaContainer" ).Elements( "Playlist" ).SingleOrDefault( e => e.HasAttributes && e.Attribute( "title" ).Value == playlist );
+
+						return playlistElement;  /here; test, allow feedback for success and graceful failure
+					}
+				}
+			}
+
+			return null;
 		}
 	}
 }
