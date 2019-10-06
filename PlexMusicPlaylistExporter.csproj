@@ -23,4 +23,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PlexPlaylistExporter\PlexPlaylistExporter.csproj" />
+  </ItemGroup>
+
 </Project>

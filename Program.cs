@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Xml.Linq;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
+using PlexPlaylistExporter;
 using NScrape;
 
 namespace PlexMusicPlaylistExporter {
@@ -45,9 +44,9 @@ namespace PlexMusicPlaylistExporter {
 						returnValue = appReturnValueFail;
 					}
 
-					var webClient = new WebClient();
+					var playlistExporter = new Exporter( new WebClient(), config["plexIp"], config["plexPort"], config["plexToken"] );
 
-					var playlistElement = GetPlaylist( config, webClient, playlistToExport.Value() );
+					playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFilePlaylistWriter( destinationFolder.Value() ) );
 				}
 				else {
 					app.ShowHint();
@@ -62,29 +61,14 @@ namespace PlexMusicPlaylistExporter {
 			catch ( CommandParsingException ex ) {
 				Console.WriteLine( $"Unable to parse provided command line options: {ex.Message}" );
 			}
+			catch ( PlaylistExportException ex ) {
+				Console.WriteLine( $"Unable to get playlist: {ex.Message}" );
+			}
 			catch ( Exception ex ) {
 				Console.WriteLine( $"Unexpected error: {ex.Message}" );
 			}
 
 			return appReturnValueFail;
-		}
-
-		private static XElement GetPlaylist( IConfiguration config, WebClient webClient, string playlist ) {
-			var allPlaylistsUri = new Uri( $"http://{config["plexIp"]}:{config["plexPort"]}/playlists?X-Plex-Token={config["plexToken"]}" );
-
-			Console.WriteLine( $"Getting list of all playlists from {allPlaylistsUri}" );
-
-			using ( var allPlaylistsResponse = webClient.SendRequest( allPlaylistsUri ) ) {
-				if ( allPlaylistsResponse.Success ) {
-					if ( allPlaylistsResponse is XmlWebResponse xmlResponse ) {
-						var playlistElement = xmlResponse.XDocument.Element( "MediaContainer" ).Elements( "Playlist" ).SingleOrDefault( e => e.HasAttributes && e.Attribute( "title" ).Value == playlist );
-
-						return playlistElement;  /here; test, allow feedback for success and graceful failure
-					}
-				}
-			}
-
-			return null;
 		}
 	}
 }

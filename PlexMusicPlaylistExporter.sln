@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexMusicPlaylistExporter", "PlexMusicPlaylistExporter.csproj", "{6234CD64-7DE4-44BE-9FF2-8808AAD1974D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlexMusicPlaylistExporter", "PlexMusicPlaylistExporter.csproj", "{6234CD64-7DE4-44BE-9FF2-8808AAD1974D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexPlaylistExporter", "..\PlexPlaylistExporter\PlexPlaylistExporter.csproj", "{210C5935-9FEA-4B57-90BE-65BF13C546E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6234CD64-7DE4-44BE-9FF2-8808AAD1974D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6234CD64-7DE4-44BE-9FF2-8808AAD1974D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6234CD64-7DE4-44BE-9FF2-8808AAD1974D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210C5935-9FEA-4B57-90BE-65BF13C546E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210C5935-9FEA-4B57-90BE-65BF13C546E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210C5935-9FEA-4B57-90BE-65BF13C546E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210C5935-9FEA-4B57-90BE-65BF13C546E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
