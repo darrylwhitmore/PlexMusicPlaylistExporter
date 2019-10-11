@@ -1,4 +1,4 @@
-# PlexMusicPlaylistExporter
+# Plex Music Playlist Exporter
 
 Long, long ago I had a lot of old school Windows Media Player playlists that I used to play tunes on my Windows machine.
 

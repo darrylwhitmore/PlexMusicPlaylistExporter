@@ -46,7 +46,7 @@ namespace PlexMusicPlaylistExporter {
 
 					var playlistExporter = new Exporter( new WebClient(), config["plexIp"], config["plexPort"], config["plexToken"] );
 
-					playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFilePlaylistWriter( destinationFolder.Value() ) );
+					playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFileAudioPlaylistWriter( destinationFolder.Value() ) );
 				}
 				else {
 					app.ShowHint();
