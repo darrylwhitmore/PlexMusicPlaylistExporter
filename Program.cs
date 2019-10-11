@@ -2,6 +2,8 @@
 using System.IO;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
+using PlexPlaylistExporter;
+using NScrape;
 
 namespace PlexMusicPlaylistExporter {
 	class Program {
@@ -41,6 +43,10 @@ namespace PlexMusicPlaylistExporter {
 						Console.WriteLine( $"Destination folder does not exist: {destinationFolder.Value()}" );
 						returnValue = appReturnValueFail;
 					}
+
+					var playlistExporter = new Exporter( new WebClient(), config["plexIp"], config["plexPort"], config["plexToken"] );
+
+					playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFileAudioPlaylistWriter( destinationFolder.Value() ) );
 				}
 				else {
 					app.ShowHint();
@@ -54,6 +60,9 @@ namespace PlexMusicPlaylistExporter {
 			}
 			catch ( CommandParsingException ex ) {
 				Console.WriteLine( $"Unable to parse provided command line options: {ex.Message}" );
+			}
+			catch ( PlaylistExportException ex ) {
+				Console.WriteLine( $"Unable to get playlist: {ex.Message}" );
 			}
 			catch ( Exception ex ) {
 				Console.WriteLine( $"Unexpected error: {ex.Message}" );
