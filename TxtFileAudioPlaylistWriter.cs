@@ -1,5 +1,5 @@
 ﻿using System.Xml.Linq;
-using PlexPlaylistExporter;
+using PlexPlaylistExporter.WriteSupport;
 
 namespace PlexMusicPlaylistExporter {
 	internal class TxtFileAudioPlaylistWriter : FilePlaylistWriter {
