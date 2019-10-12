@@ -15,6 +15,11 @@ namespace PlexMusicPlaylistExporter {
 				.AddJsonFile( "appsettings.json", true, true )
 				.Build();
 
+			if ( config["plexIp"].StartsWith( "[" ) || config["plexToken"].StartsWith( "[" ) ) {
+				Console.WriteLine( "Configure your Plex settings in 'appsettings.json' and retry." );
+				return appReturnValueFail;
+			}
+
 			// Command line argument parsing in .NET Core with Microsoft.Extensions.CommandLineUtils
 			// https://www.areilly.com/2017/04/21/command-line-argument-parsing-in-net-core-with-microsoft-extensions-commandlineutils/
 			//
