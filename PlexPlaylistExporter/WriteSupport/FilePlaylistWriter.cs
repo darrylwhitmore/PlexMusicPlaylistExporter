@@ -11,6 +11,14 @@ namespace PlexPlaylistExporter.WriteSupport {
 		protected StreamWriter CreateStreamWriter( string destinationFileName ) {
 			return new StreamWriter( Path.Combine( destinationFolder, destinationFileName ) );
 		}
+
+		protected string SanitizeFileName( string fileName ) {
+			foreach ( var badChar in Path.GetInvalidFileNameChars() ) {
+				fileName = fileName.Replace( badChar.ToString(), "" );
+			}
+
+			return fileName;
+		}
 	}
 }
 

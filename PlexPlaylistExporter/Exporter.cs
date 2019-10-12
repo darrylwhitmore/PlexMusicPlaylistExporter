@@ -23,13 +23,13 @@ namespace PlexPlaylistExporter {
 			throw new NotImplementedException();
 		}
 
-		public void Export( string playlistType, string playlist, IPlaylistWriter playlistWriter ) {
+		public void Export( string playlistType, string playlistName, IPlaylistWriter playlistWriter ) {
 			var allPlaylists = GetAllPlaylistsOfType( playlistType );
 
-			var playlistElement = allPlaylists.SingleOrDefault( xe => xe.HasAttributes && xe.Attribute( "title" )?.Value == playlist );
+			var playlistElement = allPlaylists.SingleOrDefault( xe => xe.HasAttributes && xe.Attribute( "title" )?.Value == playlistName );
 
 			if ( playlistElement == null ) {
-				throw new PlaylistExportException( $"A playlist named '{playlist}' was not found." );
+				throw new PlaylistExportException( $"A playlist of type '{playlistType}' named '{playlistName}' was not found." );
 			}
 
 			var mediaContainerElement = GetMediaContainer( playlistElement );

@@ -7,7 +7,7 @@ namespace PlexMusicPlaylistExporter {
 		}
 
 		public override void Write( XElement mediaContainerElement ) {
-			var destinationFileName = $"{GetPlaylistTitle( mediaContainerElement )}.txt";
+			var destinationFileName = $"{SanitizeFileName( GetPlaylistTitle( mediaContainerElement ) )}.txt";
 
 			using ( var sw = CreateStreamWriter( destinationFileName ) ) {
 				foreach ( var track in mediaContainerElement.Elements( "Track" ) ) {
