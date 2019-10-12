@@ -19,22 +19,32 @@ namespace PlexPlaylistExporter {
 			this.plexToken = plexToken;
 		}
 
-		public void ExportAll( string playlistType, IPlaylistWriter playlistWriter ) {
-			throw new NotImplementedException();
+		public void Export( string playlistType, IPlaylistWriter playlistWriter ) {
+			var allPlaylists = GetAllPlaylistsOfType( playlistType );
+
+			var allPlaylistNames = allPlaylists.Select( xe => xe.Attribute( "title" )?.Value );
+
+			Export( playlistType, allPlaylistNames, playlistWriter );
+		}
+
+		public void Export( string playlistType, IEnumerable<string> playlistNames, IPlaylistWriter playlistWriter ) {
+			var allPlaylists = GetAllPlaylistsOfType( playlistType );
+
+			var playlistElements = allPlaylists.Where( xe => playlistNames.Contains( xe.Attribute( "title" )?.Value ) ).ToList();
+
+			if ( playlistElements.Count <= 0 ) {
+				throw new PlaylistExportException( $"No playlists of type '{playlistType}' with the specified name(s) were found." );
+			}
+
+			foreach ( var playlistElement in playlistElements ) {
+				var mediaContainerElement = GetMediaContainer( playlistElement );
+
+				playlistWriter.Write( mediaContainerElement );
+			}
 		}
 
 		public void Export( string playlistType, string playlistName, IPlaylistWriter playlistWriter ) {
-			var allPlaylists = GetAllPlaylistsOfType( playlistType );
-
-			var playlistElement = allPlaylists.SingleOrDefault( xe => xe.HasAttributes && xe.Attribute( "title" )?.Value == playlistName );
-
-			if ( playlistElement == null ) {
-				throw new PlaylistExportException( $"A playlist of type '{playlistType}' named '{playlistName}' was not found." );
-			}
-
-			var mediaContainerElement = GetMediaContainer( playlistElement );
-
-			playlistWriter.Write( mediaContainerElement );
+			Export( playlistType, new[] { playlistName }, playlistWriter );
 		}
 
 		private IEnumerable<XElement> GetAllPlaylistsOfType( string playlistType ) {

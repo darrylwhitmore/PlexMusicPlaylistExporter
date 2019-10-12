@@ -28,11 +28,11 @@ namespace PlexMusicPlaylistExporter {
 			app.HelpOption( "-?|-h|--help" );
 
 			var playlistToExport = app.Option( "-p|--playlist <playlistName>",
-				"The playlist to export",
+				"The music playlist to export. Use '*' to export ALL music playlists.",
 				CommandOptionType.SingleValue );
 
 			var destinationFolder = app.Option( "-d|--destinationFolder <folderPath>",
-				"The destination folder where the playlist file will be written",
+				"The destination folder where the music playlist file will be written",
 				CommandOptionType.SingleValue );
 
 			app.OnExecute( () => {
@@ -46,7 +46,14 @@ namespace PlexMusicPlaylistExporter {
 
 					var playlistExporter = new Exporter( new WebClient(), config["plexIp"], config["plexPort"], config["plexToken"] );
 
-					playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFileAudioPlaylistWriter( destinationFolder.Value() ) );
+					if ( playlistToExport.Value() == "*" ) {
+						// All music playlists
+						playlistExporter.Export( "audio", new TxtFileAudioPlaylistWriter( destinationFolder.Value() ) );
+					}
+					else {
+						// Specified music playlist
+						playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFileAudioPlaylistWriter( destinationFolder.Value() ) );
+					}
 				}
 				else {
 					app.ShowHint();
