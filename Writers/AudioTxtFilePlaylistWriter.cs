@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 using PlexPlaylistExporter.WriteSupport;
 
-namespace PlexMusicPlaylistExporter {
+namespace PlexMusicPlaylistExporter.Writers {
 	internal class AudioTxtFilePlaylistWriter : FilePlaylistWriter {
 		public AudioTxtFilePlaylistWriter( string destinationFolder ) : base( destinationFolder ) {
 		}

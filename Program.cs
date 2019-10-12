@@ -4,6 +4,7 @@ using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
 using PlexPlaylistExporter;
 using NScrape;
+using PlexMusicPlaylistExporter.Writers;
 
 namespace PlexMusicPlaylistExporter {
 	class Program {
