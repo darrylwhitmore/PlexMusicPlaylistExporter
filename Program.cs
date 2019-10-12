@@ -54,11 +54,11 @@ namespace PlexMusicPlaylistExporter {
 
 					if ( playlistToExport.Value() == "*" ) {
 						// All music playlists
-						playlistExporter.Export( "audio", new AudioTxtFilePlaylistWriter( destinationFolder.Value() ) );
+						playlistExporter.Export( "audio", new TxtFilePlaylistWriter( destinationFolder.Value() ) );
 					}
 					else {
 						// Specified music playlist
-						playlistExporter.Export( "audio", playlistToExport.Value(), new AudioTxtFilePlaylistWriter( destinationFolder.Value() ) );
+						playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFilePlaylistWriter( destinationFolder.Value() ) );
 					}
 				}
 				else {

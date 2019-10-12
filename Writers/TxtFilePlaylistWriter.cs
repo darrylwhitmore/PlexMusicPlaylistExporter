@@ -2,8 +2,8 @@
 using PlexPlaylistExporter.WriteSupport;
 
 namespace PlexMusicPlaylistExporter.Writers {
-	internal class AudioTxtFilePlaylistWriter : FilePlaylistWriter {
-		public AudioTxtFilePlaylistWriter( string destinationFolder ) : base( destinationFolder ) {
+	internal class TxtFilePlaylistWriter : FilePlaylistWriter {
+		public TxtFilePlaylistWriter( string destinationFolder ) : base( destinationFolder ) {
 		}
 
 		public override void Write( XElement mediaContainerElement ) {
