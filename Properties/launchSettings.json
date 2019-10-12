@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PlexMusicPlaylistExporter": {
+      "commandName": "Project",
+      "commandLineArgs": "-p Survivor -d D:\\Users\\Darryl\\Downloads"
+    }
+  }
+}
