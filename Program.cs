@@ -4,6 +4,7 @@ using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
 using PlexPlaylistExporter;
 using NScrape;
+using PlexMusicPlaylistExporter.Writers;
 
 namespace PlexMusicPlaylistExporter {
 	class Program {
@@ -53,11 +54,11 @@ namespace PlexMusicPlaylistExporter {
 
 					if ( playlistToExport.Value() == "*" ) {
 						// All music playlists
-						playlistExporter.Export( "audio", new TxtFileAudioPlaylistWriter( destinationFolder.Value() ) );
+						playlistExporter.Export( "audio", new TxtFilePlaylistWriter( destinationFolder.Value() ) );
 					}
 					else {
 						// Specified music playlist
-						playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFileAudioPlaylistWriter( destinationFolder.Value() ) );
+						playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFilePlaylistWriter( destinationFolder.Value() ) );
 					}
 				}
 				else {

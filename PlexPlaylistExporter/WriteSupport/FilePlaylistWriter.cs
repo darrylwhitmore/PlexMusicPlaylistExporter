@@ -2,14 +2,14 @@
 
 namespace PlexPlaylistExporter.WriteSupport {
 	public abstract class FilePlaylistWriter : PlaylistWriter {
-		private readonly string destinationFolder;
+		protected readonly string DestinationFolder;
 
 		protected FilePlaylistWriter( string destinationFolder ) {
-			this.destinationFolder = destinationFolder;
+			this.DestinationFolder = destinationFolder;
 		}
 
 		protected StreamWriter CreateStreamWriter( string destinationFileName ) {
-			return new StreamWriter( Path.Combine( destinationFolder, destinationFileName ) );
+			return new StreamWriter( Path.Combine( DestinationFolder, destinationFileName ) );
 		}
 
 		protected string SanitizeFileName( string fileName ) {
