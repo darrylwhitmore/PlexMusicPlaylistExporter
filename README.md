@@ -1,28 +1,65 @@
 # Plex Music Playlist Exporter
 
-Long, long ago I had a lot of old school Windows Media Player playlists that I used to play tunes on my Windows machine.
+## TL;DR
+A little console application that will allow you to export your Plex music playlists to a file.
 
-Then, long ago, I got Sonos, and I started to use it to play the old WMP playlists. This worked great, but maintaining the playlists using WMP was a pain.
+First, you'll need to configure **appsettings.json** with the info for your Plex installation. You can get your Plex token by following the instructions in: [Finding an authentication token / X-Plex-Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
 
-Then, less long ago, I got Plex. I ignored its music functionality for a long time because *I had Sonos*.
+```json
+{
+    "plexIp": "[Your IP here]",
+    "plexPort": "32400",
+    "plexToken": "[Your token here]"
+}
+```
+Now you're ready to export. The command line options are:
+```
+Usage: PlexMusicPlaylistExporter [options]
 
-Then, recently, I replaced by beloved 20 year old Honda CRV with...yes, another CRV. But now I had Android Auto. And what's this? I can play Plex music on Android Auto?! But wait, I have no music on Plex because *I have Sonos*.
+Options:
+  -?|-h|--help                         Show help information
+  -p|--playlist <playlistName>         The music playlist to export. Use '*' to export ALL music playlists.
+  -f|--format <formatType>             The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.
+  -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written
+```
+### Examples
+This command produces does not specify an export format, so the default text format is used to produce: ***D:\destination\Sinatra.txt***:
+```
+> dotnet  PlexMusicPlaylistExporter.dll -p Sinatra -d D:\destination
+```
+This command produces ***D:\destination\Sinatra.json***:
+```
+> dotnet  PlexMusicPlaylistExporter.dll -p Sinatra -f json -d D:\destination
+```
+This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist:
+```
+> dotnet  PlexMusicPlaylistExporter.dll -p * -f xml -d D:\destination
+```
 
-So. I pointed Plex to the same music library that feeds Sonos and Presto! It works!
+## The Full Story
+Long, long, long ago I had a lot of old school **Windows Media Player** (WMP) playlists that I used to play tunes on my Windows machine.
 
-But. Selecting tunes on the go in the Plex app in Android Auto is tedious. I need...PLAYLISTS. 
+Then, long, long ago, I got **Sonos**, and I started to use it to play the old WMP playlists. This worked great, but maintaining the playlists using WMP was a pain.
 
-So. I recreated all my WMP playlists in Plex and boy, is it a much nicer way to do it. BANG! Plex playlists playin' via Android Auto in my car!
+Then, long ago, I got **Plex**. I ignored its music functionality completely because *I had **Sonos***.
 
-But. Now I have 2 sets of playlists to maintain and they're already different, because the Plex playlists have all the stuff I added to the music library but never got around to adding to the old WMP playlists because...tedious.
+Then, recently, I replaced by beloved 20 year old **Honda CR-V** with...yes, another **CR-V**. But now I had **Android Auto**. And what's this? I can play **Plex** music on **Android Auto**?! But wait, I have no music on **Plex** because *I have **Sonos***.
 
-Maintaining 2 sets of source is a screaming red flag to the developer in me. Obviously, I need a way to sync these playlists.
+So. I pointed **Plex** to the same music library that feeds **Sonos** and *Presto*! It works!
 
-Does Plex have a REST API that I can use? It does, but they don't call it that. Here's what I found: [Plex Media Server URL Commands](https://support.plex.tv/articles/201638786-plex-media-server-url-commands/). It *doesn't exactly* explain how to do what I want, but after some experimenting, I was able to figure it out.
+But. Selecting tunes on the go in the **Plex** app in **Android Auto** was tedious. I needed...*PLAYLISTS*. 
 
-So now. I need to write a little program to export my Plex playlists to files. That's this project/repository. Later, I'll need to write another program to sync the exported Plex playlists with the old WMP WPL playlist files. 
+So. I recreated all my WMP playlists in **Plex** and boy, is it a much nicer way to do that work. *BANG*! **Plex** playlists playin' via **Android Auto** in my car!
 
-I decided to put the exporter here on Github, as others might wish to do this. 
+But. Now I have 2 sets of playlists to maintain and they're already different, because the **Plex** playlists have all the stuff I added to the music library but never got around to adding to the old WMP playlists because...that way is tedious!
+
+Maintaining 2 sets of source was a screaming red flag to the developer in me. Obviously, I needed a way to sync these playlists.
+
+Does **Plex** have a REST API that I can use? It kind of does, but they don't call it that. Here's what I found: [Plex Media Server URL Commands](https://support.plex.tv/articles/201638786-plex-media-server-url-commands/). It *doesn't exactly* explain how to do what I want, but after some experimenting, I was able to figure it out.
+
+So now. I needed to write a little program to export my **Plex** playlists to files. That's this project/repository. Later, I'll need to write another program to sync the exported **Plex** playlists with the old WMP WPL playlist files. 
+
+I decided to put the export app here on Github, as others might wish to do this. 
 
 Syncing playlist files is a pretty specific task for me, but probably not for others, so that may or may not go on Github when I get to it.
 
