@@ -23,7 +23,7 @@ Options:
   -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written
 ```
 ### Examples
-This command produces does not specify an export format, so the default text format is used to produce: ***D:\destination\Sinatra.txt***:
+This command does not specify an export format, so the default text format is used to produce: ***D:\destination\Sinatra.txt***:
 ```
 > dotnet  PlexMusicPlaylistExporter.dll -p Sinatra -d D:\destination
 ```
