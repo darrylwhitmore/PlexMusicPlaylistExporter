@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
 using PlexPlaylistExporter;
 using NScrape;
 using PlexMusicPlaylistExporter.Writers;
+using PlexPlaylistExporter.WriteSupport;
 
 namespace PlexMusicPlaylistExporter {
 	class Program {
@@ -37,35 +39,62 @@ namespace PlexMusicPlaylistExporter {
 				"The music playlist to export. Use '*' to export ALL music playlists.",
 				CommandOptionType.SingleValue );
 
+			var exportFormat = app.Option( "-f|--format <formatType>",
+				"The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.",
+				CommandOptionType.SingleValue );
+
 			var destinationFolder = app.Option( "-d|--destinationFolder <folderPath>",
 				"The destination folder where the music playlist file will be written",
 				CommandOptionType.SingleValue );
 
 			app.OnExecute( () => {
-				var returnValue = appReturnValueOk;
-
 				if ( playlistToExport.HasValue() && destinationFolder.HasValue() ) {
 					if ( !Directory.Exists( destinationFolder.Value() ) ) {
-						Console.WriteLine( $"Destination folder does not exist: {destinationFolder.Value()}" );
-						returnValue = appReturnValueFail;
+						Console.WriteLine( $"Destination folder does not exist: '{destinationFolder.Value()}'" );
+						return appReturnValueFail;
+					}
+
+					IPlaylistWriter writer;
+					var formatType = exportFormat.HasValue() ? exportFormat.Value().ToLowerInvariant() : "txt";
+					switch ( formatType ) {
+						case "json":
+							writer = new JsonFilePlaylistWriter( destinationFolder.Value() );
+							break;
+
+						case "txt":
+							writer = new TxtFilePlaylistWriter( destinationFolder.Value() );
+							break;
+
+						case "wpl":
+							writer = new WplFilePlaylistWriter( destinationFolder.Value() , $"Plex Music Playlist Exporter -- {Assembly.GetExecutingAssembly().GetName().Version}" );
+							break;
+
+						case "xml":
+							writer = new XmlFilePlaylistWriter( destinationFolder.Value() );
+							break;
+
+						default:
+							Console.WriteLine( $"Invalid export format type: '{formatType}'" );
+							return appReturnValueFail;
 					}
 
 					var playlistExporter = new Exporter( new WebClient(), config["plexIp"], config["plexPort"], config["plexToken"] );
 
 					if ( playlistToExport.Value() == "*" ) {
 						// All music playlists
-						playlistExporter.Export( "audio", new TxtFilePlaylistWriter( destinationFolder.Value() ) );
+						playlistExporter.Export( "audio", writer );
 					}
 					else {
 						// Specified music playlist
-						playlistExporter.Export( "audio", playlistToExport.Value(), new TxtFilePlaylistWriter( destinationFolder.Value() ) );
+						playlistExporter.Export( "audio", playlistToExport.Value(), writer );
 					}
-				}
-				else {
-					app.ShowHint();
+
+					return appReturnValueOk;
 				}
 
-				return returnValue;
+				Console.WriteLine( "One or more required arguments were not provided." );
+				app.ShowHint();
+				return appReturnValueFail;
 			} );
 
 			try {

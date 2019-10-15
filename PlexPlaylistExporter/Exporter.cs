@@ -6,6 +6,8 @@ using NScrape;
 using PlexPlaylistExporter.WriteSupport;
 
 namespace PlexPlaylistExporter {
+	// Plex Media Server URL Commands
+	// https://support.plex.tv/articles/201638786-plex-media-server-url-commands/
 	public class Exporter {
 		private readonly IWebClient webClient;
 		private readonly string plexIp;
