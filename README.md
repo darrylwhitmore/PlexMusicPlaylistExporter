@@ -3,37 +3,36 @@
 ## TL;DR
 A little console application that will allow you to export your Plex music playlists to a file.
 
-First, you'll need to configure **appsettings.json** with the info for your Plex installation. You can get your Plex token by following the instructions in: [Finding an authentication token / X-Plex-Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
+First, you'll need some information about your Plex server:
+* The IP address of the server.
+* The port of the server (usually 32400 but you may have changed it)
+* The authentication token. You can get this by following the instructions in: [Finding an authentication token / X-Plex-Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
 
-```json
-{
-    "plexIp": "[Your IP here]",
-    "plexPort": "32400",
-    "plexToken": "[Your token here]"
-}
-```
 Now you're ready to export. The command line options are:
 ```
 Usage: PlexMusicPlaylistExporter [options]
 
 Options:
   -?|-h|--help                         Show help information
+  -t|--token <plexToken>               Your Plex authentication token.
+  -pt|--port <plexPort>                Your Plex port.
+  -i|--ip <plexIP>                     Your Plex IP address.
   -p|--playlist <playlistName>         The music playlist to export. Use '*' to export ALL music playlists.
   -f|--format <formatType>             The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.
-  -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written
+  -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written  
 ```
 ### Examples
 This command does not specify an export format, so the default text format is used to produce: ***D:\destination\Sinatra.txt***:
 ```
-> dotnet  PlexMusicPlaylistExporter.dll -p Sinatra -d D:\destination
+> dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -d D:\destination
 ```
 This command produces ***D:\destination\Sinatra.json***:
 ```
-> dotnet  PlexMusicPlaylistExporter.dll -p Sinatra -f json -d D:\destination
+> dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -f json -d D:\destination
 ```
 This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist:
 ```
-> dotnet  PlexMusicPlaylistExporter.dll -p * -f xml -d D:\destination
+> dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -f xml -d D:\destination
 ```
 
 ## The Full Story
