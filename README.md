@@ -18,6 +18,7 @@ Options:
   -pt|--port <plexPort>                Your Plex port.
   -i|--ip <plexIP>                     Your Plex IP address.
   -p|--playlist <playlistName>         The music playlist to export. Use '*' to export ALL music playlists.
+  -xs|--excludeSmart                   If specified, smart playlists will be excluded.
   -f|--format <formatType>             The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.
   -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written  
 ```
@@ -33,6 +34,11 @@ This command produces ***D:\destination\Sinatra.json***:
 This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist:
 ```
 > dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -f xml -d D:\destination
+```
+
+This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist, excluding *smart playlists*:
+```
+> dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -xs -f xml -d D:\destination
 ```
 
 ## The Full Story
