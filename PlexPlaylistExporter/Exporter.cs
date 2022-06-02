@@ -21,16 +21,16 @@ namespace PlexPlaylistExporter {
 			this.plexToken = plexToken;
 		}
 
-		public void Export( string playlistType, IPlaylistWriter playlistWriter ) {
-			var allPlaylists = GetAllPlaylistsOfType( playlistType );
+		public void Export( string playlistType, bool excludeSmart, IPlaylistWriter playlistWriter ) {
+			var allPlaylists = GetAllPlaylistsOfType( playlistType, excludeSmart );
 
 			var allPlaylistNames = allPlaylists.Select( xe => xe.Attribute( "title" )?.Value );
 
-			Export( playlistType, allPlaylistNames, playlistWriter );
+			Export( playlistType, allPlaylistNames, excludeSmart, playlistWriter );
 		}
 
-		public void Export( string playlistType, IEnumerable<string> playlistNames, IPlaylistWriter playlistWriter ) {
-			var allPlaylists = GetAllPlaylistsOfType( playlistType );
+		public void Export( string playlistType, IEnumerable<string> playlistNames, bool excludeSmart, IPlaylistWriter playlistWriter ) {
+			var allPlaylists = GetAllPlaylistsOfType( playlistType, excludeSmart );
 
 			var playlistElements = allPlaylists.Where( xe => playlistNames.Contains( xe.Attribute( "title" )?.Value ) ).ToList();
 
@@ -45,18 +45,29 @@ namespace PlexPlaylistExporter {
 			}
 		}
 
-		public void Export( string playlistType, string playlistName, IPlaylistWriter playlistWriter ) {
-			Export( playlistType, new[] { playlistName }, playlistWriter );
+		public void Export( string playlistType, string playlistName, bool excludeSmart, IPlaylistWriter playlistWriter ) {
+			Export( playlistType, new[] { playlistName }, excludeSmart, playlistWriter );
 		}
 
-		private IEnumerable<XElement> GetAllPlaylistsOfType( string playlistType ) {
+		private IEnumerable<XElement> GetAllPlaylistsOfType( string playlistType, bool excludeSmart ) {
 			var allPlaylistsUri = new Uri( $"http://{plexIp}:{plexPort}/playlists?X-Plex-Token={plexToken}" );
 
 			try {
 				using ( var allPlaylistsResponse = webClient.SendRequest( allPlaylistsUri ) ) {
 					if ( allPlaylistsResponse.Success ) {
 						if ( allPlaylistsResponse is XmlWebResponse xmlResponse ) {
-							return xmlResponse.XDocument.Element( "MediaContainer" )?.Elements( "Playlist" ).Where( xe => xe.HasAttributes && xe.Attribute( "playlistType" )?.Value == playlistType );
+							var validSmart = excludeSmart
+								? new[] {
+									"0"
+								}
+								: new[] {
+									"0", "1"
+								};
+
+							return xmlResponse.XDocument.Element( "MediaContainer" )?.Elements( "Playlist" ).
+								Where( xe => xe.HasAttributes && 
+								             xe.Attribute( "playlistType" )?.Value == playlistType && 
+								             validSmart.Contains( xe.Attribute( "smart" )?.Value ) );
 						}
 
 						throw new PlaylistExportException( $"Unexpected response type ('{allPlaylistsResponse.ResponseType}') attempting to get all '{playlistType}' playlists at {allPlaylistsUri}" );

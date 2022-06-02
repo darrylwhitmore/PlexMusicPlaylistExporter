@@ -43,6 +43,10 @@ namespace PlexMusicPlaylistExporter {
 				"The music playlist to export. Use '*' to export ALL music playlists.",
 				CommandOptionType.SingleValue );
 
+			var excludeSmart = app.Option( "-xs|--excludeSmart",
+				"If specified, smart playlists will be excluded.",
+				CommandOptionType.NoValue );
+
 			var exportFormat = app.Option( "-f|--format <formatType>",
 				"The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.",
 				CommandOptionType.SingleValue );
@@ -101,11 +105,11 @@ namespace PlexMusicPlaylistExporter {
 
 					if ( playlistToExport.Value() == "*" ) {
 						// All music playlists
-						playlistExporter.Export( "audio", writer );
+						playlistExporter.Export( "audio", excludeSmart.HasValue(), writer );
 					}
 					else {
 						// Specified music playlist
-						playlistExporter.Export( "audio", playlistToExport.Value(), writer );
+						playlistExporter.Export( "audio", playlistToExport.Value(), excludeSmart.HasValue(), writer );
 					}
 
 					return appReturnValueOk;
