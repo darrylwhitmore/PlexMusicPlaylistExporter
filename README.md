@@ -2,7 +2,7 @@
 
 The **Plex Music Playlist Exporter** is a little .NET console application that will allow you to export your [Plex](https://www.plex.tv/) music playlists to a file.
 
-## Environment Setup
+## Building the Application
 The simplest, but heaviest, approach is to use [Visual Studio](https://visualstudio.microsoft.com/), which will also get you .NET. You can then build the code in Visual Studio, and execute the application via the command line using .NET.
 
 The lightest approach is to use  [.NET](https://dotnet.microsoft.com/en-us/download) on the command line to both build and execute the application. To build this way:
@@ -15,13 +15,13 @@ The lightest approach is to use  [.NET](https://dotnet.microsoft.com/en-us/downl
 ```
 > dotnet  publish -c release
 ```
-## Plex Server Info
+## Info You Need About Your Plex Server
 You'll need to gather the following information about your Plex server:
 * The IP address of the server.
 * The port of the server (usually 32400 but you may have changed it)
 * The authentication token. You can get this by following the instructions in: [Finding an authentication token / X-Plex-Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
 
-## Application Command Line options
+## Application Command Line Options
 The command line options are:
 ```
 Usage: PlexMusicPlaylistExporter [options]
@@ -36,7 +36,7 @@ Options:
   -f|--format <formatType>             The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.
   -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written  
 ```
-## Examples
+### Command Line Examples
 This command does not specify an export format, so the default text format is used to produce: ***D:\destination\Sinatra.txt***:
 ```
 > dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -d D:\destination
@@ -62,7 +62,7 @@ Then, long, long ago, I got **[Sonos](https://www.sonos.com/)**, and I started t
 
 Then, long ago, I got **Plex** for my video library. I ignored its music functionality completely because *I had **Sonos***.
 
-Then, recently, I replaced by beloved 20 year old **Honda CR-V** with...yes, another **CR-V**. But now I had **[Android Auto](https://www.android.com/auto/)**. And what's this? I can play **Plex** music on **Android Auto**?! But wait, I have no music on **Plex** because *I have **Sonos***.
+Then, more recently, I replaced by beloved 20 year old **Honda CR-V** with...yes, another **CR-V**. But now I had **[Android Auto](https://www.android.com/auto/)**. And what's this? I can play **Plex** music on **Android Auto**?! But wait, I have no music on **Plex** because *I have **Sonos***.
 
 So. I pointed **Plex** to the same music library that feeds **Sonos** and *Presto*! It works!
 
