@@ -3,20 +3,21 @@
 The **Plex Music Playlist Exporter** is a little .NET console application that will allow you to export your [Plex](https://www.plex.tv/) music playlists to a file.
 
 ## Building the Application
-The simplest, but heaviest, approach is to use [Visual Studio](https://visualstudio.microsoft.com/), which will also get you .NET. You can then build the code in Visual Studio, and execute the application via the command line using .NET.
+The simplest, but heaviest, approach is to use [Visual Studio](https://visualstudio.microsoft.com/), which will also give you .NET. You can then build the code in Visual Studio, and execute the application via the command line using .NET.
 
 The lightest approach is to use  [.NET](https://dotnet.microsoft.com/en-us/download) on the command line to both build and execute the application. To build this way:
 
-1. Get the code, either by cloning the repo or downloading. 
-2. Open the command line and navigate to the directory where the solution file, PlexMusicPlaylistExporter.sln, is located.
-3. Use the [dotnet publish](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-publish) command to build the application.
+1. Install [.NET](https://dotnet.microsoft.com/en-us/download).
+2. Get the code, either by cloning the repo or downloading. 
+3. Open the command line and navigate to the directory where the solution file, PlexMusicPlaylistExporter.sln, is located.
+4. Use the [dotnet publish](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-publish) command to build the application:
 
 
 ```
 > dotnet  publish -c release
 ```
 ## Info You Need About Your Plex Server
-You'll need to gather the following information about your Plex server:
+You'll need to gather the following information about your Plex server, which will be provided to the application via command line arguments:
 * The IP address of the server.
 * The port of the server (usually 32400 but you may have changed it)
 * The authentication token. You can get this by following the instructions in: [Finding an authentication token / X-Plex-Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
@@ -37,22 +38,29 @@ Options:
   -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written  
 ```
 ### Command Line Examples
+For brevity, the following examples do not include a path to the executable, but remember to include one as applicable for your installation. For example: 
+
+```
+D:\Proj\PlexMusicPlaylistExporter\bin\Release\net6.0\publish\PlexMusicPlaylistExporter ...
+```
+
+
 This command does not specify an export format, so the default text format is used to produce: ***D:\destination\Sinatra.txt***:
 ```
-> dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -d D:\destination
+> PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -d D:\destination
 ```
 This command produces ***D:\destination\Sinatra.json***:
 ```
-> dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -f json -d D:\destination
+> PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -f json -d D:\destination
 ```
 This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist:
 ```
-> dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -f xml -d D:\destination
+> PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -f xml -d D:\destination
 ```
 
-This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist, excluding *smart playlists*:
+This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist, *excluding smart playlists*:
 ```
-> dotnet  PlexMusicPlaylistExporter.dll -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -xs -f xml -d D:\destination
+> PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -xs -f xml -d D:\destination
 ```
 
 ## The Backstory
