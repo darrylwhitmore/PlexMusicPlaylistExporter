@@ -41,7 +41,7 @@ Options:
 For brevity, the following examples do not include a path to the executable, but remember to include one as applicable for your installation. For example: 
 
 ```
-D:\Proj\PlexMusicPlaylistExporter\bin\Release\net6.0\publish\PlexMusicPlaylistExporter ...
+D:\Proj\PlexMusicPlaylistExporter\bin\Release\net9.0\publish\PlexMusicPlaylistExporter ...
 ```
 
 
