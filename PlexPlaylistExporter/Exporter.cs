@@ -70,6 +70,14 @@ namespace PlexPlaylistExporter {
 								             validSmart.Contains( xe.Attribute( "smart" )?.Value ) );
 						}
 
+						if ( allPlaylistsResponse is HtmlWebResponse htmlResponse ) {
+							// Check whether the token is bad. This is a kludge: HttpWebResponse does not expose the underlying
+							// response status code, so we have to examine the HTML.
+							if ( htmlResponse.Html.Contains( "401" ) ) {
+								throw new PlaylistExportException( $"The provided Plex authentication token '{plexToken}' is invalid." );
+							}
+						}
+
 						throw new PlaylistExportException( $"Unexpected response type ('{allPlaylistsResponse.ResponseType}') attempting to get all '{playlistType}' playlists at {allPlaylistsUri}" );
 					}
 
