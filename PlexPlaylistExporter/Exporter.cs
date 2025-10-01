@@ -10,12 +10,14 @@ namespace PlexPlaylistExporter {
 	// https://support.plex.tv/articles/201638786-plex-media-server-url-commands/
 	public class Exporter {
 		private readonly IWebClient webClient;
+		private readonly string plexProtocol;
 		private readonly string plexIp;
 		private readonly string plexPort;
 		private readonly string plexToken;
 
-		public Exporter( IWebClient webClient, string plexIp, string plexPort, string plexToken ) {
+		public Exporter( IWebClient webClient, bool useHttps, string plexIp, string plexPort, string plexToken ) {
 			this.webClient = webClient;
+			this.plexProtocol = "http" + ( useHttps ? "s" : "" );
 			this.plexIp = plexIp;
 			this.plexPort = plexPort;
 			this.plexToken = plexToken;
@@ -50,7 +52,7 @@ namespace PlexPlaylistExporter {
 		}
 
 		private IEnumerable<XElement> GetAllPlaylistsOfType( string playlistType, bool excludeSmart ) {
-			var allPlaylistsUri = new Uri( $"http://{plexIp}:{plexPort}/playlists?X-Plex-Token={plexToken}" );
+			var allPlaylistsUri = new Uri( $"{plexProtocol}://{plexIp}:{plexPort}/playlists?X-Plex-Token={plexToken}" );
 
 			try {
 				using ( var allPlaylistsResponse = webClient.SendRequest( allPlaylistsUri ) ) {
@@ -96,7 +98,7 @@ namespace PlexPlaylistExporter {
 				throw new PlaylistExportException( "Required attribute 'key' not found in playlist element." );
 			}
 
-			var playlistUri = new Uri( $"http://{plexIp}:{plexPort}{key}?X-Plex-Token={plexToken}" );
+			var playlistUri = new Uri( $"{plexProtocol}://{plexIp}:{plexPort}{key}?X-Plex-Token={plexToken}" );
 
 			using ( var playlistResponse = webClient.SendRequest( playlistUri ) ) {
 				if ( playlistResponse.Success ) {
