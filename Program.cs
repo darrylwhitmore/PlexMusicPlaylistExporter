@@ -40,11 +40,11 @@ namespace PlexMusicPlaylistExporter {
 				CommandOptionType.SingleValue );
 
 			var useHttps = app.Option( "-https|--useHttps",
-				"Provide if your Plex server requires HTTPS.",
+				"Specify if your Plex server requires HTTPS.",
 				CommandOptionType.SingleOrNoValue );
 
 			var playlistToExport = app.Option( "-p|--playlist <playlistName>",
-				"The music playlist to export. Use '*' to export ALL music playlists.",
+				"The music playlist to export. Enclose playlists with spaces in double quotes (\"). Use '*' to export ALL music playlists.",
 				CommandOptionType.SingleValue );
 
 			var excludeSmart = app.Option( "-xs|--excludeSmart",

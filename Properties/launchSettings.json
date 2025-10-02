@@ -3,6 +3,10 @@
     "PlexMusicPlaylistExporter": {
       "commandName": "Project",
       "commandLineArgs": "-t XXXXXX -i 192.168.0.999 -pt 32400 -p 1980s -d D:\\Users\\Darryl\\Downloads"
+    },
+    "get help": {
+      "commandName": "Project",
+      "commandLineArgs": "-h"
     }
   }
 }

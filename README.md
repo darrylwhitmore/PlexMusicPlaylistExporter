@@ -32,7 +32,9 @@ Options:
   -t|--token <plexToken>               Your Plex authentication token.
   -pt|--port <plexPort>                Your Plex port.
   -i|--ip <plexIP>                     Your Plex IP address.
-  -p|--playlist <playlistName>         The music playlist to export. Use '*' to export ALL music playlists.
+  -https|--useHttps                    Specify if your Plex server requires HTTPS.
+  -p|--playlist <playlistName>         The music playlist to export. Enclose playlists with spaces in double quotes (").
+                                       Use '*' to export ALL music playlists.
   -xs|--excludeSmart                   If specified, smart playlists will be excluded.
   -f|--format <formatType>             The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.
   -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written  
@@ -53,6 +55,11 @@ This command produces ***D:\destination\Sinatra.json***:
 ```
 > PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -f json -d D:\destination
 ```
+The Plex server in this example requires HTTPS. This command produces ***"D:\destination\The Beatles.wpl"***:
+```
+> PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -https -pt 32400 -p "The Beatles" -f wpl -d D:\destination
+```
+
 This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist:
 ```
 > PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -f xml -d D:\destination
