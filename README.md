@@ -20,7 +20,13 @@ The lightest approach is to use  [.NET](https://dotnet.microsoft.com/en-us/downl
 You'll need to gather the following information about your Plex server, which will be provided to the application via command line arguments:
 * The IP address of the server.
 * The port of the server (usually 32400 but you may have changed it)
-* The authentication token. You can get this by following the instructions in: [Finding an authentication token / X-Plex-Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
+* The authentication token. You can get this by following the instructions in: [Finding an authentication token / X-Plex-Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/). *Note*: the token is generally long-lived, but *can change* as the result of some configuration changes, for instance, if you *change your password*.
+
+*If you have configured your Plex server to use secure connections* (**Settings | Network | Secure connections = Required**), you will also need your server's subdomain hash. To find it, follow the same instructions for finding your authentication token above. In the URL, locate the subdomain hash:
+
+`https://192-168-0-999.[your subdomain hash].plex.direct:32400/...`
+
+*Somewhat confusing FYI:* while the subdomain hash is **necessary** when your server requires secure connections, you *may also* use it when secure connections are not required (**Secure connections = Preferred**). Using the hash will work for either configuration.
 
 ## Application Command Line Options
 The command line options are:
@@ -28,16 +34,16 @@ The command line options are:
 Usage: PlexMusicPlaylistExporter [options]
 
 Options:
-  -?|-h|--help                         Show help information
-  -t|--token <plexToken>               Your Plex authentication token.
-  -pt|--port <plexPort>                Your Plex port.
-  -i|--ip <plexIP>                     Your Plex IP address.
-  -https|--useHttps                    Specify if your Plex server requires HTTPS.
-  -p|--playlist <playlistName>         The music playlist to export. Enclose playlists with spaces in double quotes (").
-                                       Use '*' to export ALL music playlists.
-  -xs|--excludeSmart                   If specified, smart playlists will be excluded.
-  -f|--format <formatType>             The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.
-  -d|--destinationFolder <folderPath>  The destination folder where the music playlist file will be written  
+  -?|-h|--help                             Show help information.
+  -t|--token <plexToken>                   Your Plex authentication token.
+  -pt|--port <plexPort>                    Your Plex port.
+  -i|--ip <plexIP>                         Your Plex IP address.
+  -sh|--subdomainHash <plexSubdomainHash>  Specify if your Plex server has 'Secure connections'=Required.
+  -p|--playlist <playlistName>             The music playlist to export. Enclose playlists with spaces in double quotes
+                                           ("). Use '*' to export ALL music playlists.
+  -xs|--excludeSmart                       If specified, smart playlists will be excluded.
+  -f|--format <formatType>                 The export format: 'json', 'txt' (default if omitted), 'wpl', 'xml'.
+  -d|--destinationFolder <folderPath>      The destination folder where the music playlist file will be written  
 ```
 ### Command Line Examples
 For brevity, the following examples do not include a path to the executable, but remember to include one as applicable for your installation. For example: 
@@ -45,7 +51,7 @@ For brevity, the following examples do not include a path to the executable, but
 ```
 D:\Proj\PlexMusicPlaylistExporter\bin\Release\net9.0\publish\PlexMusicPlaylistExporter ...
 ```
-
+Also note that playlist names are *case sensitive*, and must be *enclosed in double quotes (")* if they contain embedded spaces.
 
 This command does not specify an export format, so the default text format is used to produce: ***D:\destination\Sinatra.txt***:
 ```
@@ -55,9 +61,9 @@ This command produces ***D:\destination\Sinatra.json***:
 ```
 > PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p Sinatra -f json -d D:\destination
 ```
-The Plex server in this example requires HTTPS. This command produces ***"D:\destination\The Beatles.wpl"***:
+The Plex server in this example is configured to *require secure connections*. This command produces ***"D:\destination\The Beatles.wpl"***:
 ```
-> PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -https -pt 32400 -p "The Beatles" -f wpl -d D:\destination
+> PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -sh zzzzzz -pt 32400 -p "The Beatles" -f wpl -d D:\destination
 ```
 
 This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist:
@@ -65,7 +71,7 @@ This command exports all Plex music playlists to XML files in ***D:\destination*
 > PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -f xml -d D:\destination
 ```
 
-This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist, *excluding smart playlists*:
+This command exports all Plex music playlists to XML files in ***D:\destination***, one file for each playlist, *excluding smart playlists (such as **All Music**, **Recently Added**, **Recently Played**, etc)*:
 ```
 > PlexMusicPlaylistExporter -t XXXXXX -i 192.168.0.999 -pt 32400 -p * -xs -f xml -d D:\destination
 ```

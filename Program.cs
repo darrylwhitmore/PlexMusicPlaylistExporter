@@ -39,9 +39,9 @@ namespace PlexMusicPlaylistExporter {
 				"Your Plex IP address.",
 				CommandOptionType.SingleValue );
 
-			var useHttps = app.Option( "-https|--useHttps",
-				"Specify if your Plex server requires HTTPS.",
-				CommandOptionType.SingleOrNoValue );
+			var plexSubdomainHash = app.Option( "-sh|--subdomainHash <plexSubdomainHash>",
+				"Specify if your Plex server has 'Secure connections'=Required.",
+				CommandOptionType.SingleValue );
 
 			var playlistToExport = app.Option( "-p|--playlist <playlistName>",
 				"The music playlist to export. Enclose playlists with spaces in double quotes (\"). Use '*' to export ALL music playlists.",
@@ -105,7 +105,7 @@ namespace PlexMusicPlaylistExporter {
 							return appReturnValueFail;
 					}
 
-					var playlistExporter = new Exporter( new WebClient(), useHttps.HasValue(), plexIp.Value(), plexPort.Value(), plexToken.Value() );
+					var playlistExporter = new Exporter( new WebClient(), plexIp.Value(), plexSubdomainHash.Value(), plexPort.Value(), plexToken.Value() );
 
 					if ( playlistToExport.Value() == "*" ) {
 						// All music playlists
